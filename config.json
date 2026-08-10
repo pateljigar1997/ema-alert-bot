@@ -1,0 +1,15 @@
+{
+  "debug": true,
+  "rules": [
+    {
+      "id": "btc-15m",
+      "name": "BTC 15m EMA51",
+      "enabled": true,
+      "exchange": "binance",
+      "symbol": "BTC/USDT",
+      "timeframe": "15m",
+      "ema": 51,
+      "direction": "both"
+    }
+  ]
+}

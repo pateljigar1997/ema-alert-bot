@@ -1,0 +1,10 @@
+{
+    "btc-15m-sell": {
+        "signal": "SELL",
+        "timestamp": "2026-08-10 02:15:00+00:00"
+    },
+    "btc-15m": {
+        "signal": "SELL",
+        "timestamp": "2026-08-10 02:15:00+00:00"
+    }
+}
