@@ -31,7 +31,6 @@
       "fast_ema": 21,
       "slow_ema": 51
     },
-
     {
       "id": "eth-5m",
       "name": "ETH 5m EMA21/51",
@@ -58,6 +57,36 @@
       "enabled": true,
       "exchange": "binance",
       "symbol": "ETH/USDT",
+      "timeframe": "30m",
+      "fast_ema": 21,
+      "slow_ema": 51
+    },
+    {
+      "id": "gold-5m",
+      "name": "GOLD 5m EMA21/51",
+      "enabled": true,
+      "exchange": "twelvedata",
+      "symbol": "XAU/USD",
+      "timeframe": "5m",
+      "fast_ema": 21,
+      "slow_ema": 51
+    },
+    {
+      "id": "gold-15m",
+      "name": "GOLD 15m EMA21/51",
+      "enabled": true,
+      "exchange": "twelvedata",
+      "symbol": "XAU/USD",
+      "timeframe": "15m",
+      "fast_ema": 21,
+      "slow_ema": 51
+    },
+    {
+      "id": "gold-30m",
+      "name": "GOLD 30m EMA21/51",
+      "enabled": true,
+      "exchange": "twelvedata",
+      "symbol": "XAU/USD",
       "timeframe": "30m",
       "fast_ema": 21,
       "slow_ema": 51

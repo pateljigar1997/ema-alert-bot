@@ -39,9 +39,10 @@ def main():
         try:
 
             df = get_ohlcv(
-                symbol=rule["symbol"],
-                timeframe=rule["timeframe"],
-            )
+    symbol=rule["symbol"],
+    timeframe=rule["timeframe"],
+    exchange=rule["exchange"],
+)
 
             df = calculate_emas(
                 df,
