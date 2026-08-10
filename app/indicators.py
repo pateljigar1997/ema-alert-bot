@@ -1,16 +1,22 @@
 import pandas as pd
 
 
-def calculate_ema(df: pd.DataFrame, period: int) -> pd.DataFrame:
+def calculate_emas(df: pd.DataFrame, fast_period: int, slow_period: int) -> pd.DataFrame:
     """
-    Calculate EMA and append it to the dataframe.
+    Calculate Fast EMA and Slow EMA.
     """
 
     df = df.copy()
 
-    df["ema"] = (
+    df["ema_fast"] = (
         df["close"]
-        .ewm(span=period, adjust=False)
+        .ewm(span=fast_period, adjust=False)
+        .mean()
+    )
+
+    df["ema_slow"] = (
+        df["close"]
+        .ewm(span=slow_period, adjust=False)
         .mean()
     )
 

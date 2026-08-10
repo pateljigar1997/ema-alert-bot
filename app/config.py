@@ -1,25 +1,15 @@
 import json
 from pathlib import Path
 
-
-ROOT_DIR = Path(__file__).resolve().parent.parent
-CONFIG_FILE = ROOT_DIR / "config.json"
+CONFIG_FILE = Path("config.json")
 
 
-def load_config() -> dict:
+def load_config():
     if not CONFIG_FILE.exists():
-        raise FileNotFoundError(
-            f"config.json not found: {CONFIG_FILE}"
-        )
+        raise FileNotFoundError(f"{CONFIG_FILE} not found.")
 
-    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-        config = json.load(f)
-
-    if "rules" not in config:
-        raise ValueError("config.json must contain 'rules'.")
-
-    if not isinstance(config["rules"], list):
-        raise ValueError("'rules' must be a list.")
+    with open(CONFIG_FILE, "r", encoding="utf-8") as file:
+        config = json.load(file)
 
     required_fields = [
         "id",
@@ -28,8 +18,8 @@ def load_config() -> dict:
         "exchange",
         "symbol",
         "timeframe",
-        "ema",
-        "direction"
+        "fast_ema",
+        "slow_ema",
     ]
 
     for rule in config["rules"]:
@@ -38,12 +28,5 @@ def load_config() -> dict:
                 raise ValueError(
                     f"Missing '{field}' in rule '{rule.get('id', 'unknown')}'."
                 )
-
-        if rule["direction"] not in ["above", "below", "both"]:
-            raise ValueError(
-                f"Invalid direction '{rule['direction']}' in rule '{rule['id']}'."
-            )
-
-    config.setdefault("debug", False)
 
     return config

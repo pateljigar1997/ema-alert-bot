@@ -3,11 +3,10 @@ import pandas as pd
 
 def detect_cross(df: pd.DataFrame, rule: dict):
     """
-    Detect EMA crossover using the last two CLOSED candles.
+    Detect EMA21 / EMA51 crossover using the last two CLOSED candles.
 
     Returns:
-        signal : BUY | SELL | None
-        candle : Closed candle (current)
+        BUY / SELL / None
     """
 
     if len(df) < 3:
@@ -17,18 +16,26 @@ def detect_cross(df: pd.DataFrame, rule: dict):
     previous = df.iloc[-3]
     current = df.iloc[-2]
 
-    previous_above = previous["close"] > previous["ema"]
-    current_above = current["close"] > current["ema"]
+    previous_fast = previous["ema_fast"]
+    previous_slow = previous["ema_slow"]
 
-    bullish = (not previous_above) and current_above
-    bearish = previous_above and (not current_above)
+    current_fast = current["ema_fast"]
+    current_slow = current["ema_slow"]
 
-    direction = rule["direction"].lower()
+    bullish = (
+        previous_fast <= previous_slow
+        and current_fast > current_slow
+    )
 
-    if bullish and direction in ["above", "both"]:
+    bearish = (
+        previous_fast >= previous_slow
+        and current_fast < current_slow
+    )
+
+    if bullish:
         return "BUY", current
 
-    if bearish and direction in ["below", "both"]:
+    if bearish:
         return "SELL", current
 
     return None, current

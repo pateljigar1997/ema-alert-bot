@@ -1,12 +1,12 @@
 from app.config import load_config
-from app.indicators import calculate_ema
+from app.indicators import calculate_emas
 from app.services.exchange import get_ohlcv
 from app.services.logger import get_logger
 from app.services.state import (
     load_state,
     save_state,
     is_duplicate,
-    update_state
+    update_state,
 )
 from app.services.telegram_service import notify
 from app.strategies.ema_strategy import detect_cross
@@ -15,9 +15,8 @@ logger = get_logger()
 
 
 def main():
-
     logger.info("=" * 50)
-    logger.info("EMA Alert Bot Started")
+    logger.info("EMA Cross Alert Bot Started")
     logger.info("=" * 50)
 
     config = load_config()
@@ -34,31 +33,30 @@ def main():
         logger.info(f"Rule       : {rule['name']}")
         logger.info(f"Symbol     : {rule['symbol']}")
         logger.info(f"Timeframe  : {rule['timeframe']}")
-        logger.info(f"EMA        : {rule['ema']}")
+        logger.info(f"Fast EMA   : {rule['fast_ema']}")
+        logger.info(f"Slow EMA   : {rule['slow_ema']}")
 
         try:
 
             df = get_ohlcv(
                 symbol=rule["symbol"],
-                timeframe=rule["timeframe"]
+                timeframe=rule["timeframe"],
             )
 
-            df = calculate_ema(
+            df = calculate_emas(
                 df,
-                rule["ema"]
+                rule["fast_ema"],
+                rule["slow_ema"],
             )
 
-            signal, candle = detect_cross(
-                df,
-                rule
-            )
+            signal, candle = detect_cross(df, rule)
 
             if candle is None:
                 logger.warning("Not enough candle data.")
                 continue
 
             logger.info(
-                f"Close={candle['close']:.2f} | EMA={candle['ema']:.2f}"
+                f"EMA21={candle['ema_fast']:.2f} | EMA51={candle['ema_slow']:.2f}"
             )
 
             if signal is None:
@@ -71,7 +69,7 @@ def main():
                 state,
                 rule["id"],
                 signal,
-                candle_timestamp
+                candle_timestamp,
             ):
                 logger.info("Duplicate signal. Skipping.")
                 continue
@@ -79,13 +77,13 @@ def main():
             icon = "🟢" if signal == "BUY" else "🔴"
 
             message = (
-                "🚨 EMA CROSS ALERT\n\n"
+                "🚨 EMA CROSS ALERT 🚨\n\n"
                 f"{icon} {signal}\n\n"
                 f"🪙 Symbol : {rule['symbol']}\n"
                 f"⏰ TF     : {rule['timeframe']}\n"
-                f"📈 EMA    : {rule['ema']}\n\n"
-                f"💰 Close  : {candle['close']:.2f}\n"
-                f"📉 EMA    : {candle['ema']:.2f}\n\n"
+                f"⚡ EMA    : {rule['fast_ema']} / {rule['slow_ema']}\n\n"
+                f"📈 EMA{rule['fast_ema']} : {candle['ema_fast']:.2f}\n"
+                f"📉 EMA{rule['slow_ema']} : {candle['ema_slow']:.2f}\n\n"
                 f"🕒 Candle : {candle_timestamp}"
             )
 
@@ -97,7 +95,7 @@ def main():
                 state,
                 rule["id"],
                 signal,
-                candle_timestamp
+                candle_timestamp,
             )
 
             save_state(state)
