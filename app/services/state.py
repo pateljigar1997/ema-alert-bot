@@ -25,4 +25,37 @@ def save_state(state: dict) -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     with open(STATE_FILE, "w", encoding="utf-8") as file:
-        json.dump(state, file, indent=4)
+        json.dump(
+            state,
+            file,
+            indent=4,
+            ensure_ascii=False
+        )
+
+
+def is_duplicate(state: dict, rule_id: str, signal: str, timestamp: str) -> bool:
+    """
+    Returns True if the same signal has already been sent
+    for the same candle.
+    """
+
+    previous = state.get(rule_id)
+
+    if previous is None:
+        return False
+
+    return (
+        previous.get("signal") == signal
+        and previous.get("timestamp") == timestamp
+    )
+
+
+def update_state(state: dict, rule_id: str, signal: str, timestamp: str) -> None:
+    """
+    Update state after sending Telegram alert.
+    """
+
+    state[rule_id] = {
+        "signal": signal,
+        "timestamp": timestamp
+    }
