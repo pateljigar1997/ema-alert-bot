@@ -2,7 +2,12 @@ from app.config import load_config
 from app.indicators import calculate_ema
 from app.services.exchange import get_ohlcv
 from app.services.logger import get_logger
-from app.services.state import load_state, save_state
+from app.services.state import (
+    load_state,
+    save_state,
+    is_duplicate,
+    update_state
+)
 from app.services.telegram_service import notify
 from app.strategies.ema_strategy import detect_cross
 
@@ -11,9 +16,9 @@ logger = get_logger()
 
 def main():
 
-    logger.info("========================================")
+    logger.info("=" * 50)
     logger.info("EMA Alert Bot Started")
-    logger.info("========================================")
+    logger.info("=" * 50)
 
     config = load_config()
     state = load_state()
@@ -23,31 +28,33 @@ def main():
     for rule in config["rules"]:
 
         if not rule["enabled"]:
-            logger.info(f"Skipping disabled rule: {rule['name']}")
             continue
 
-        logger.info("----------------------------------------")
-        logger.info(f"Checking : {rule['name']}")
-        logger.info(f"Symbol   : {rule['symbol']}")
-        logger.info(f"TF       : {rule['timeframe']}")
-        logger.info(f"EMA      : {rule['ema']}")
+        logger.info("-" * 50)
+        logger.info(f"Rule       : {rule['name']}")
+        logger.info(f"Symbol     : {rule['symbol']}")
+        logger.info(f"Timeframe  : {rule['timeframe']}")
+        logger.info(f"EMA        : {rule['ema']}")
 
         try:
 
-            # Download candles
             df = get_ohlcv(
                 symbol=rule["symbol"],
                 timeframe=rule["timeframe"]
             )
 
-            # Calculate EMA
-            df = calculate_ema(df, rule["ema"])
+            df = calculate_ema(
+                df,
+                rule["ema"]
+            )
 
-            # Detect signal
-            signal, candle = detect_cross(df, rule)
+            signal, candle = detect_cross(
+                df,
+                rule
+            )
 
             if candle is None:
-                logger.warning("Not enough candles.")
+                logger.warning("Not enough candle data.")
                 continue
 
             logger.info(
@@ -55,71 +62,52 @@ def main():
             )
 
             if signal is None:
-                logger.info("No EMA crossover.")
+                logger.info("No crossover detected.")
                 continue
 
-            candle_time = str(candle["timestamp"])
+            candle_timestamp = str(candle["timestamp"])
 
-            previous = state.get(rule["id"])
-
-            if (
-                previous
-                and previous["timestamp"] == candle_time
-                and previous["signal"] == signal
+            if is_duplicate(
+                state,
+                rule["id"],
+                signal,
+                candle_timestamp
             ):
                 logger.info("Duplicate signal. Skipping.")
                 continue
 
             icon = "🟢" if signal == "BUY" else "🔴"
 
-            message = f"""
-🚨 EMA CROSS ALERT
-
-{icon} {signal}
-
-🪙 Symbol
-{rule['symbol']}
-
-⏰ Timeframe
-{rule['timeframe']}
-
-📈 EMA
-{rule['ema']}
-
-━━━━━━━━━━━━━━
-
-💰 Close
-{candle['close']:.2f}
-
-📉 EMA
-{candle['ema']:.2f}
-
-━━━━━━━━━━━━━━
-
-🕒 Candle
-
-{candle['timestamp']}
-"""
-
-            logger.info("Sending Telegram alert...")
+            message = (
+                "🚨 EMA CROSS ALERT\n\n"
+                f"{icon} {signal}\n\n"
+                f"🪙 Symbol : {rule['symbol']}\n"
+                f"⏰ TF     : {rule['timeframe']}\n"
+                f"📈 EMA    : {rule['ema']}\n\n"
+                f"💰 Close  : {candle['close']:.2f}\n"
+                f"📉 EMA    : {candle['ema']:.2f}\n\n"
+                f"🕒 Candle : {candle_timestamp}"
+            )
 
             notify(message)
 
-            logger.info("Telegram sent successfully.")
+            logger.info("Telegram sent.")
 
-            state[rule["id"]] = {
-                "signal": signal,
-                "timestamp": candle_time
-            }
+            update_state(
+                state,
+                rule["id"],
+                signal,
+                candle_timestamp
+            )
 
             save_state(state)
 
-            logger.info("State updated.")
+            logger.info("State saved.")
 
         except Exception as ex:
             logger.exception(ex)
 
-    logger.info("----------------------------------------")
+    logger.info("-" * 50)
     logger.info("Finished.")
 
 
