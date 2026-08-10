@@ -77,15 +77,16 @@ def main():
             icon = "🟢" if signal == "BUY" else "🔴"
 
             message = (
-                "🚨 EMA CROSS ALERT 🚨\n\n"
-                f"{icon} {signal}\n\n"
-                f"🪙 Symbol : {rule['symbol']}\n"
-                f"⏰ TF     : {rule['timeframe']}\n"
-                f"⚡ EMA    : {rule['fast_ema']} / {rule['slow_ema']}\n\n"
-                f"📈 EMA{rule['fast_ema']} : {candle['ema_fast']:.2f}\n"
-                f"📉 EMA{rule['slow_ema']} : {candle['ema_slow']:.2f}\n\n"
-                f"🕒 Candle : {candle_timestamp}"
-            )
+    "🚨 EMA CROSS ALERT 🚨\n\n"
+    f"{'🟢 BUY SIGNAL' if signal == 'BUY' else '🔴 SELL SIGNAL'}\n\n"
+    f"🪙 Symbol      : {rule['symbol']}\n"
+    f"⏰ Timeframe   : {rule['timeframe']}\n"
+    f"📊 Strategy    : EMA {rule['fast_ema']} / EMA {rule['slow_ema']}\n\n"
+    f"{f'📈 EMA {rule['fast_ema']} crossed ABOVE EMA {rule['slow_ema']}' if signal == 'BUY' else f'📉 EMA {rule["fast_ema"]} crossed BELOW EMA {rule["slow_ema"]}'}\n\n"
+    f"⚡ EMA {rule['fast_ema']} : {candle['ema_fast']:.2f}\n"
+    f"⚡ EMA {rule['slow_ema']} : {candle['ema_slow']:.2f}\n\n"
+    f"🕒 Candle Close : {candle_timestamp}"
+)
 
             notify(message)
 
