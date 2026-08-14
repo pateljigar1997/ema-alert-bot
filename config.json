@@ -2,66 +2,6 @@
   "debug": true,
   "rules": [
     {
-      "id": "btc-5m",
-      "name": "BTC 5m EMA21/51",
-      "enabled": true,
-      "exchange": "twelvedata",
-      "symbol": "BTC/USDT",
-      "timeframe": "5m",
-      "fast_ema": 21,
-      "slow_ema": 51
-    },
-    {
-      "id": "btc-15m",
-      "name": "BTC 15m EMA21/51",
-      "enabled": true,
-      "exchange": "twelvedata",
-      "symbol": "BTC/USDT",
-      "timeframe": "15m",
-      "fast_ema": 21,
-      "slow_ema": 51
-    },
-    {
-      "id": "btc-30m",
-      "name": "BTC 30m EMA21/51",
-      "enabled": true,
-      "exchange": "twelvedata",
-      "symbol": "BTC/USDT",
-      "timeframe": "30m",
-      "fast_ema": 21,
-      "slow_ema": 51
-    },
-    {
-      "id": "eth-5m",
-      "name": "ETH 5m EMA21/51",
-      "enabled": true,
-      "exchange": "twelvedata",
-      "symbol": "ETH/USDT",
-      "timeframe": "5m",
-      "fast_ema": 21,
-      "slow_ema": 51
-    },
-    {
-      "id": "eth-15m",
-      "name": "ETH 15m EMA21/51",
-      "enabled": true,
-      "exchange": "twelvedata",
-      "symbol": "ETH/USDT",
-      "timeframe": "15m",
-      "fast_ema": 21,
-      "slow_ema": 51
-    },
-    {
-      "id": "eth-30m",
-      "name": "ETH 30m EMA21/51",
-      "enabled": true,
-      "exchange": "twelvedata",
-      "symbol": "ETH/USDT",
-      "timeframe": "30m",
-      "fast_ema": 21,
-      "slow_ema": 51
-    },
-    {
       "id": "gold-5m",
       "name": "GOLD 5m EMA21/51",
       "enabled": true,
