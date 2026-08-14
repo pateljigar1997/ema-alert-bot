@@ -6,5 +6,9 @@
     "btc-15m": {
         "signal": "SELL",
         "timestamp": "2026-08-10 02:15:00+00:00"
+    },
+    "gold-15m": {
+        "signal": "BUY",
+        "timestamp": "2026-08-14 20:00:00"
     }
 }
