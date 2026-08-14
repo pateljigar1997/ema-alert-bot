@@ -7,7 +7,8 @@ load_dotenv()
 
 TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
 
-
+print(f"API Key Loaded: {TWELVEDATA_API_KEY is not None}")
+print(f"API Key Length: {len(TWELVEDATA_API_KEY) if TWELVEDATA_API_KEY else 0}")
 def get_ohlcv(symbol, timeframe, exchange="twelvedata", limit=200):
     """
     Fetch OHLCV data from Twelve Data.
