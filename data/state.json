@@ -10,5 +10,9 @@
     "gold-15m": {
         "signal": "BUY",
         "timestamp": "2026-08-14 20:00:00"
+    },
+    "gold-5m": {
+        "signal": "BUY",
+        "timestamp": "2026-08-15 21:00:00"
     }
 }
