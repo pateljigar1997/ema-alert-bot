@@ -13,10 +13,10 @@
     },
     "gold-5m": {
         "signal": "SELL",
-        "timestamp": "2026-08-18 21:50:00"
+        "timestamp": "2026-08-18 23:15:00"
     },
     "gold-30m-trend": {
         "trend": "BEARISH",
-        "timestamp": "2026-08-18 21:30:00"
+        "timestamp": "2026-08-18 22:30:00"
     }
 }
