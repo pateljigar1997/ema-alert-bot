@@ -14,5 +14,9 @@
     "gold-5m": {
         "signal": "BUY",
         "timestamp": "2026-08-18 09:25:00"
+    },
+    "gold-30m-trend": {
+        "trend": "BEARISH",
+        "timestamp": "2026-08-18 12:00:00"
     }
 }
