@@ -59,3 +59,27 @@ def update_state(state: dict, rule_id: str, signal: str, timestamp: str) -> None
         "signal": signal,
         "timestamp": timestamp
     }
+
+
+def get_trend(state: dict):
+    """
+    Return the last stored 30m trend.
+    """
+
+    trend_state = state.get("gold-30m-trend")
+
+    if trend_state is None:
+        return None
+
+    return trend_state.get("trend")
+
+
+def update_trend(state: dict, trend: str, timestamp: str) -> None:
+    """
+    Save the latest confirmed 30m trend.
+    """
+
+    state["gold-30m-trend"] = {
+        "trend": trend,
+        "timestamp": timestamp
+    }

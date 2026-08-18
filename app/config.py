@@ -18,8 +18,8 @@ def load_config():
         "exchange",
         "symbol",
         "timeframe",
-        "fast_ema",
-        "slow_ema",
+        "ema",
+        "direction",
     ]
 
     for rule in config["rules"]:

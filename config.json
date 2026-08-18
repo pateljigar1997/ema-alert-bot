@@ -3,33 +3,33 @@
   "rules": [
     {
       "id": "gold-5m",
-      "name": "GOLD 5m EMA21/51",
+      "name": "GOLD 5m Price/EMA21",
       "enabled": true,
       "exchange": "twelvedata",
       "symbol": "XAU/USD",
       "timeframe": "5m",
-      "fast_ema": 21,
-      "slow_ema": 51
+      "ema": 21,
+      "direction": "both"
     },
     {
       "id": "gold-15m",
-      "name": "GOLD 15m EMA21/51",
+      "name": "GOLD 15m Price/EMA51",
       "enabled": true,
       "exchange": "twelvedata",
       "symbol": "XAU/USD",
       "timeframe": "15m",
-      "fast_ema": 21,
-      "slow_ema": 51
+      "ema": 51,
+      "direction": "both"
     },
     {
       "id": "gold-30m",
-      "name": "GOLD 30m EMA21/51",
+      "name": "GOLD 30m Trend/EMA51",
       "enabled": true,
       "exchange": "twelvedata",
       "symbol": "XAU/USD",
       "timeframe": "30m",
-      "fast_ema": 21,
-      "slow_ema": 51
+      "ema": 51,
+      "direction": "both"
     }
   ]
 }
