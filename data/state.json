@@ -12,11 +12,11 @@
         "timestamp": "2026-09-07 07:15:00"
     },
     "gold-5m": {
-        "signal": "BUY",
-        "timestamp": "2026-09-03 15:40:00"
+        "signal": "SELL",
+        "timestamp": "2026-09-07 10:50:00"
     },
     "gold-30m-trend": {
-        "trend": "BULLISH",
-        "timestamp": "2026-09-07 08:30:00"
+        "trend": "BEARISH",
+        "timestamp": "2026-09-07 10:00:00"
     }
 }
